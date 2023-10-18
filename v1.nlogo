@@ -41,8 +41,9 @@ to go
   ;if not any? turtles [ stop ]
   ; stop the model if there are no wolves and the number of sheep gets very large
   if count fishes > max-fishes [ user-message "The fishes have inherited the earth" stop ]
+  if count fishes < 1 [ user-message "Fishes stressed out" stop ]
   ask fishes [
-    move
+    ;move
 
     ; in this version, sheep eat grass, grass grows, and it costs sheep energy to move
 
@@ -52,11 +53,24 @@ to go
   ]
   ask tortues [
     move
+    let nearby-fishes fishes in-radius 2
+    if any? nearby-fishes [
+      ask nearby-fishes [
+        ; Calculate the direction towards the tortue
+        let toward-tortue towards one-of tortues
+        ; Calculate the direction away from the tortue
+        let away-from-tortue (toward-tortue + 180) mod 360
+        ; Move in the opposite direction away from the tortue
+        rt random-float 10 - 5 + away-from-tortue
+        fd 1
+      ]
+    ]
     ;set energy energy - 1  ; wolves lose energy as they move
     ;eat-sheep ; wolves eat a sheep on their patch
     ;death ; wolves die if they run out of energy
     ;reproduce-wolves ; wolves reproduce at a random rate governed by a slider
   ]
+
 
   tick
   display-labels
