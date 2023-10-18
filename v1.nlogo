@@ -53,36 +53,55 @@ to go
   ]
   ask tortues [
     ;move
-    let nearby-fishes fishes in-radius 2
-    if any? nearby-fishes [
-      ask nearby-fishes [
-        ; Calculate the direction towards the tortue
-        let toward-tortue towards one-of tortues
-        ; Calculate the direction away from the tortue
-        let away-from-tortue (toward-tortue + 180) mod 360
-        ; Move in the opposite direction away from the tortue
-        rt random-float 10 - 5 + away-from-tortue
-        fd 1
-
-      ]
-        ; Calculate the direction towards a nearby fish
-      let nearby-fish one-of fishes in-radius 2
-      if nearby-fish != nobody [
-      let towards-fish towards nearby-fish
-      set heading towards-fish ; Turn the tortue towards the fish
-      ]
-    ]
+;    let nearby-fishes fishes in-radius 2
+;    if any? nearby-fishes [
+;      ask nearby-fishes [
+;        ; Calculate the direction towards the tortue
+;        let toward-tortue towards one-of tortues
+;        ; Calculate the direction away from the tortue
+;        let away-from-tortue (toward-tortue + 180) mod 360
+;        ; Move in the opposite direction away from the tortue
+;        rt random-float 10 - 5 + away-from-tortue
+;        fd 1
+;
+;      ]
+;        ; Calculate the direction towards a nearby fish
+;      let nearby-fish one-of fishes in-radius 2
+;      if nearby-fish != nobody [
+;      let towards-fish towards nearby-fish
+;      set heading towards-fish ; Turn the tortue towards the fish
+;      ]
+;    ]
     move
   ]
   tick
   display-labels
 end
 
-to move  ; move randomly
-;  rt random 50
-;  lt random 50
+to move  ; turtle procedure
+  let nb_tortues (count fishes in-cone 2 90)
+  let direction "forwards"
+
+  lt 90
+  let new_nb_tortues (count fishes in-cone 2 90)
+  if new_nb_tortues > nb_tortues [set direction "left"]
+
+  lt 90
+  set new_nb_tortues (count fishes in-cone 2 90)
+  if new_nb_tortues > nb_tortues [set direction "backwards"]
+
+  lt 90
+  set new_nb_tortues (count fishes in-cone 2 90)
+  if new_nb_tortues > nb_tortues [set direction "right"]
+
+  lt 90 ;return to original facing
+
+  if direction = "left" [lt 90]
+  if direction = "backwards"[lt 180]
+  if direction = "right" [rt 90]
   fd 1
 end
+
 
 to reproduce-fishes  ; fishes reproduce
   if random-float 100 < fish-reproduce [  ; throw "dice" to see if you will reproduce depending of the choosen rate in interface
@@ -154,7 +173,7 @@ fish-reproduce
 fish-reproduce
 1.0
 20.0
-1.0
+4.0
 1.0
 1
 %
