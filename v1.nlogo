@@ -38,9 +38,9 @@ to go
   if count fishes > max-fishes [ user-message "The fishes have inherited the earth" stop ] ;end of the simulation if there are too many fishes
   if not any? fishes [ user-message "Fishes stressed out" stop ] ; end of the simulation when there is no more fish
   ask fishes [
-    if stress < 1 [reproduce-fishes]  ; if fishes are not stressed too much they can try to reproduce
+    if stress < 5 [reproduce-fishes]  ; if fishes are not stressed too much they can try to reproduce
     ; Check for nearby fish in the same direction
-    let nearby-fish one-of other fishes in-cone 5 45; Exclude itself with 'other'
+    let nearby-fish one-of other fishes with [stress > 5]  in-cone 5 45; Exclude itself with 'other'
     if nearby-fish != nobody and distance nearby-fish > 0 [
       ; Calculate the direction towards the nearby fish
       let towards-fish towards nearby-fish
@@ -53,7 +53,7 @@ to go
   ]
   ask tortues [
     ;move
-    let nearby-fishes fishes with [stress > 15] in-radius 2
+    let nearby-fishes fishes in-radius 2
     if any? nearby-fishes [
       ask nearby-fishes [
         ; Calculate the direction towards the tortue
@@ -118,7 +118,7 @@ end
 
 to reproduce-fishes  ; fishes reproduce
   if random-float 100 < fish-reproduce [  ; throw "dice" to see if you will reproduce depending of the choosen rate in interface
-    set stress 5                ; set the stress back for the newborn (max stress)
+    set stress 10                ; set the stress back for the newborn (max stress)
     hatch 1 [ rt random-float 360 fd 1 ]   ; hatch an offspring and move it forward 1 step
   ]
 end
