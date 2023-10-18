@@ -19,7 +19,7 @@ to setup
     set color red
     set size 1
     set label-color yellow ; color of label: stress
-    set stress 20
+    set stress 0
     setxy random-xcor random-ycor
   ]
 
@@ -40,7 +40,7 @@ to go
   ask fishes [
     if stress < 1 [reproduce-fishes]  ; if fishes are not stressed too much they can try to reproduce
     ; Check for nearby fish in the same direction
-    let nearby-fish one-of other fishes in-cone 45 2 ; Exclude itself with 'other'
+    let nearby-fish one-of other fishes in-cone 5 45; Exclude itself with 'other'
     if nearby-fish != nobody and distance nearby-fish > 0 [
       ; Calculate the direction towards the nearby fish
       let towards-fish towards nearby-fish
@@ -48,12 +48,12 @@ to go
       set heading towards-fish
       fd 1
     ]
-    ifelse count tortues in-radius 4 > 2 [set stress stress + 15] [if stress > 0 [set stress stress - 1]] ; if there is a tortue whithin a radius of 4, the fish gets 15 points of stress otherwise he loses 1 point
+    ifelse count tortues in-radius 4 > 0 [set stress stress + 1] [if stress > 0 [set stress stress - 1]] ; if there is a tortue whithin a radius of 4, the fish gets 15 points of stress otherwise he loses 1 point
     death ;we try to see if the fish is to die
   ]
   ask tortues [
     ;move
-    let nearby-fishes fishes in-radius 2
+    let nearby-fishes fishes with [stress > 15] in-radius 2
     if any? nearby-fishes [
       ask nearby-fishes [
         ; Calculate the direction towards the tortue
@@ -65,12 +65,12 @@ to go
         fd 1
 
       ]
-        ; Calculate the direction towards a nearby fish
-      let nearby-fish one-of fishes in-radius 2
-      if nearby-fish != nobody [
-      let towards-fish towards nearby-fish
-      set heading towards-fish ; Turn the tortue towards the fish
-      ]
+;        ; Calculate the direction towards a nearby fish
+;      let nearby-fish one-of fishes in-radius 2
+;      if nearby-fish != nobody [
+;      let towards-fish towards nearby-fish
+;      set heading towards-fish ; Turn the tortue towards the fish
+;      ]
     ]
     move
   ]
@@ -78,15 +78,47 @@ to go
   display-labels
 end
 
-to move  ; move randomly
-;  rt random 50
-;  lt random 50
+to move  ; turtle procedure
+  let nb_tortues (count fishes in-cone 2 90)
+  let direction "forwards"
+
+  lt 90
+  let new_nb_tortues (count fishes in-cone 2 90)
+  if new_nb_tortues > nb_tortues
+  [
+    set direction "left"
+    set nb_tortues new_nb_tortues
+  ]
+
+  lt 90
+  set new_nb_tortues (count fishes in-cone 2 90)
+  if new_nb_tortues > nb_tortues
+  [
+    set direction "backwards"
+    set nb_tortues new_nb_tortues
+  ]
+
+  lt 90
+  set new_nb_tortues (count fishes in-cone 2 90)
+  if new_nb_tortues > nb_tortues
+  [
+    set direction "right"
+    set nb_tortues new_nb_tortues
+  ]
+
+  lt 90 ;return to original facing
+  lt random 50
+  rt random 50
+  if direction = "left" [lt 90]
+  if direction = "backwards"[lt 180]
+  if direction = "right" [rt 90]
   fd 1
 end
 
+
 to reproduce-fishes  ; fishes reproduce
   if random-float 100 < fish-reproduce [  ; throw "dice" to see if you will reproduce depending of the choosen rate in interface
-    set stress 20                ; set the stress back for the newborn (max stress)
+    set stress 5                ; set the stress back for the newborn (max stress)
     hatch 1 [ rt random-float 360 fd 1 ]   ; hatch an offspring and move it forward 1 step
   ]
 end
@@ -154,7 +186,7 @@ fish-reproduce
 fish-reproduce
 1.0
 20.0
-1.0
+4.0
 1.0
 1
 %
@@ -257,7 +289,7 @@ SWITCH
 133
 show-stress?
 show-stress?
-1
+0
 1
 -1000
 
@@ -272,15 +304,17 @@ Testing fishes stress with turtles\n
 1
 
 @#$#@#$#@
+Sure, here's the adapted information statement for your code:
+
 ## WHAT IS IT?
 
-This model simulates the dynamics of a predator-prey ecosystem consisting of fishes and turtles. The fishes aim to maintain their population while managing their stress levels. If their stress gets too high, they die. The turtles move randomly and can cause stress to nearby fishes. The goal is to explore the stability and interactions of this ecosystem.
+This model simulates the dynamics of a predator-prey ecosystem consisting of fishes and tortoises. The fishes aim to maintain their population while managing their stress levels. If their stress gets too high, they die. The tortoises move in a pattern based on their proximity to nearby fishes. The goal is to explore the stability and interactions of this ecosystem.
 
 ## HOW IT WORKS
 
 - **Globals**: The model has a global variable `max-fishes` to limit the fish population growth.
 
-- **Breeds**: Two breeds are defined - `fishes` and `tortues` to represent fishes and tortoises.
+- **Breeds**: Two breeds are defined - `fishes` and `tortoises` to represent fishes and tortoises.
 
 - **Fish Characteristics**: Fishes have the characteristic `stress` to represent their stress levels.
 
@@ -288,16 +322,16 @@ This model simulates the dynamics of a predator-prey ecosystem consisting of fis
   -- It clears the world and sets the maximum number of fishes.
   -- Patches are colored blue to simulate the sea.
   -- Fishes are created with initial attributes, including shape, color, size, and initial stress levels.
-  -- Tortoises are created with initial attributes.
+  -- Tortoises are created with initial attributes and move based on their proximity to fishes.
 
 - **Go**:
   -- The simulation continues as long as there are not too many fish or all fish have died.
   - Fishes:
     -- Try to reproduce if their stress is below a certain threshold.
-    --Their stress increases if there are tortoises within a radius of 4 and decreases if not.
+    -- Their stress increases if there are tortoises within a radius of 4 and decreases if not.
     -- Fishes can die if their stress exceeds a critical value.
   - Tortoises:
-    -- Move randomly and can cause stress to nearby fishes.
+    -- Move in a pattern based on their proximity to nearby fishes.
   - The model updates at each tick, and labels displaying fish stress are optionally shown.
 
 ## HOW TO USE IT
@@ -310,7 +344,7 @@ This model simulates the dynamics of a predator-prey ecosystem consisting of fis
 Parameters:
 - `max-fishes`: Maximum fish population.
 - `initial-number-fishes`: Initial number of fish.
-- `initial-number-tortues`: Initial number of tortoises.
+- `initial-number-tortoises`: Initial number of tortoises.
 - `fish-reproduce`: Probability of fish reproduction.
 - `show-stress?`: Whether to display stress levels.
 
@@ -330,10 +364,6 @@ Parameters:
 - The model utilizes breeds to represent different types of agents (fishes and tortoises).
 - Agents have their own characteristics (stress levels).
 - The use of global variables to control the simulation.
-
-## RELATED MODELS
-
-None provided in the code.
 
 ## CREDITS AND REFERENCES
 
