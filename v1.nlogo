@@ -39,12 +39,21 @@ to go
   if not any? fishes [ user-message "Fishes stressed out" stop ] ; end of the simulation when there is no more fish
   ask fishes [
     if stress < 1 [reproduce-fishes]  ; if fishes are not stressed too much they can try to reproduce
+    ; Check for nearby fish in the same direction
+    let nearby-fish one-of other fishes in-cone 45 2 ; Exclude itself with 'other'
+    if nearby-fish != nobody and distance nearby-fish > 0 [
+      ; Calculate the direction towards the nearby fish
+      let towards-fish towards nearby-fish
+      ; Move in the direction of the nearby fish
+      set heading towards-fish
+      fd 1
+    ]
     ifelse count tortues in-radius 4 > 2 [set stress stress + 15] [if stress > 0 [set stress stress - 1]] ; if there is a tortue whithin a radius of 4, the fish gets 15 points of stress otherwise he loses 1 point
     death ;we try to see if the fish is to die
   ]
   ask tortues [
-    move ; tortue moves randomly
-    let nearby-fishes fishes in-radius 2 ;we want to know fishes in a radius of 2
+    ;move
+    let nearby-fishes fishes in-radius 2
     if any? nearby-fishes [
       ask nearby-fishes [
         ; Calculate the direction towards the tortue
@@ -54,16 +63,24 @@ to go
         ; Move in the opposite direction away from the tortue
         rt random-float 10 - 5 + away-from-tortue
         fd 1
+
+      ]
+        ; Calculate the direction towards a nearby fish
+      let nearby-fish one-of fishes in-radius 2
+      if nearby-fish != nobody [
+      let towards-fish towards nearby-fish
+      set heading towards-fish ; Turn the tortue towards the fish
       ]
     ]
+    move
   ]
   tick
   display-labels
 end
 
 to move  ; move randomly
-  rt random 50
-  lt random 50
+;  rt random 50
+;  lt random 50
   fd 1
 end
 
@@ -122,7 +139,7 @@ initial-number-fishes
 initial-number-fishes
 0
 250
-127.0
+145.0
 1
 1
 NIL
@@ -137,7 +154,7 @@ fish-reproduce
 fish-reproduce
 1.0
 20.0
-4.0
+1.0
 1.0
 1
 %
@@ -152,7 +169,7 @@ initial-number-tortues
 initial-number-tortues
 0
 250
-48.0
+32.0
 1
 1
 NIL
@@ -248,7 +265,7 @@ TEXTBOX
 5
 15
 365
-101
+45
 Testing fishes stress with turtles\n
 24
 33.0
