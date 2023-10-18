@@ -1,35 +1,33 @@
-globals [ max-fishes ]  ; don't let the sheep population grow too large
+globals [ max-fishes ]  ; don't let the fish population grow too large
 
-; Sheep and wolves are both breeds of turtles
-breed [ fishes fish ]  ; sheep is its own plural, so we use "a-sheep" as the singular
+breed [ fishes fish ]  ; two breeds fishes and turtles
+
 breed [ tortues tortue ]
 
-fishes-own [ stress ]       ; both wolves and sheep have energy
-
-patches-own [ countdown ]    ; this is for the sheep-wolves-grass model version
+fishes-own [ stress ]       ; fishes have caracteristic which is stress
 
 to setup
   clear-all
-  set max-fishes 10000
+  set max-fishes 10000 ; max number of fish
 
-  ask patches [ set pcolor blue ]
+  ask patches [ set pcolor blue ] ; bleu background to simulate see
 
 
-  create-fishes initial-number-fishes  ; create the sheep, then initialize their variables
+  create-fishes initial-number-fishes  ; create the fish, then initialize their variables
   [
     set shape  "fish"
     set color red
-    set size 1  ; easier to see
-    set label-color yellow
+    set size 1
+    set label-color yellow ; color of label: stress
     set stress 20
     setxy random-xcor random-ycor
   ]
 
-  create-tortues initial-number-tortues  ; create the wolves, then initialize their variables
+  create-tortues initial-number-tortues  ; create the tortues, then initialize their variables
   [
     set shape "turtle"
     set color green
-    set size 1.5 ; easier to see
+    set size 1.5 ; easier to see (bigger in size for graphic purpose)
     setxy random-xcor random-ycor
   ]
   display-labels
@@ -37,23 +35,16 @@ to setup
 end
 
 to go
-  ; stop the model if there are no wolves and no sheep
-  ;if not any? turtles [ stop ]
-  ; stop the model if there are no wolves and the number of sheep gets very large
-  if count fishes > max-fishes [ user-message "The fishes have inherited the earth" stop ]
-  if count fishes < 1 [ user-message "Fishes stressed out" stop ]
+  if count fishes > max-fishes [ user-message "The fishes have inherited the earth" stop ] ;end of the simulation if there are too many fishes
+  if not any? fishes [ user-message "Fishes stressed out" stop ] ; end of the simulation when there is no more fish
   ask fishes [
-    ;move
-
-    ; in this version, sheep eat grass, grass grows, and it costs sheep energy to move
-
-    if stress < 1 [reproduce-fishes]  ; sheep reproduce at a random rate governed by a slider
-    ifelse count tortues in-radius 4 > 2  [set stress stress + 15] [set stress stress - 1]
-    death
+    if stress < 1 [reproduce-fishes]  ; if fishes are not stressed too much they can try to reproduce
+    ifelse count tortues in-radius 4 > 2 [set stress stress + 15] [if stress > 0 [set stress stress - 1]] ; if there is a tortue whithin a radius of 4, the fish gets 15 points of stress otherwise he loses 1 point
+    death ;we try to see if the fish is to die
   ]
   ask tortues [
-    move
-    let nearby-fishes fishes in-radius 2
+    move ; tortue moves randomly
+    let nearby-fishes fishes in-radius 2 ;we want to know fishes in a radius of 2
     if any? nearby-fishes [
       ask nearby-fishes [
         ; Calculate the direction towards the tortue
@@ -65,61 +56,35 @@ to go
         fd 1
       ]
     ]
-    ;set energy energy - 1  ; wolves lose energy as they move
-    ;eat-sheep ; wolves eat a sheep on their patch
-    ;death ; wolves die if they run out of energy
-    ;reproduce-wolves ; wolves reproduce at a random rate governed by a slider
   ]
-
-
   tick
   display-labels
 end
 
-to move  ; turtle procedure
+to move  ; move randomly
   rt random 50
   lt random 50
   fd 1
 end
 
-to reproduce-fishes  ; sheep procedure
-  if random-float 100 < fish-reproduce [  ; throw "dice" to see if you will reproduce
-    set stress 20                ; divide energy between parent and offspring
+to reproduce-fishes  ; fishes reproduce
+  if random-float 100 < fish-reproduce [  ; throw "dice" to see if you will reproduce depending of the choosen rate in interface
+    set stress 20                ; set the stress back for the newborn (max stress)
     hatch 1 [ rt random-float 360 fd 1 ]   ; hatch an offspring and move it forward 1 step
   ]
 end
 
-;to reproduce-wolves  ; wolf procedure
-  ;if random-float 100 < wolf-reproduce [  ; throw "dice" to see if you will reproduce
-  ;  set energy (energy / 2)               ; divide energy between parent and offspring
-  ;  hatch 1 [ rt random-float 360 fd 1 ]  ; hatch an offspring and move it forward 1 step
-  ;]
-;end
-
-;to eat-sheep  ; wolf procedure
-  ;let prey one-of sheep-here                    ; grab a random sheep
-  ;if prey != nobody  [                          ; did we get one? if so,
-   ; ask prey [ die ]                            ; kill it, and...
-   ; set energy energy + wolf-gain-from-food     ; get energy from eating
-  ;]
-;end
-
-to death  ; turtle procedure (i.e. both wolf and sheep procedure)
-   ;when energy dips below zero, die
-  if stress > 21 [ die ]
+to death  ; fishes death
+  if stress > 21 [ die ] ; if the fish is stressed too much it will die
 end
 
 
 to display-labels
   ask turtles [ set label "" ]
-  if show-stress? [
+  if show-stress? [ ; display or not the stress of each fish
     ask fishes [ set label round stress ]
   ]
 end
-
-
-; Copyright 1997 Uri Wilensky.
-; See Info tab for full copyright and license.
 @#$#@#$#@
 GRAPHICS-WINDOW
 360
@@ -165,9 +130,9 @@ HORIZONTAL
 
 SLIDER
 5
-231
+145
 179
-264
+178
 fish-reproduce
 fish-reproduce
 1.0
@@ -194,10 +159,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-40
-140
-109
-173
+110
+100
+179
+133
 setup
 setup
 NIL
@@ -211,10 +176,10 @@ NIL
 1
 
 BUTTON
-115
-140
-190
-173
+185
+100
+260
+133
 go
 go
 T
@@ -229,9 +194,9 @@ NIL
 
 PLOT
 10
-360
+240
 350
-530
+410
 populations
 time
 pop.
@@ -247,10 +212,10 @@ PENS
 "tortues" 1.0 0 -16449023 true "" "plot count tortues"
 
 MONITOR
-41
-308
-111
-353
+105
+190
+175
+235
 fishes
 count fishes
 3
@@ -258,44 +223,24 @@ count fishes
 11
 
 MONITOR
-115
-308
-185
-353
+179
+190
+249
+235
 tortues
 count tortues
 3
 1
 11
 
-TEXTBOX
-20
-178
-160
-196
-Sheep settings
-11
-0.0
-0
-
-TEXTBOX
-198
-176
-311
-194
-Wolf settings
-11
-0.0
-0
-
 SWITCH
-105
-270
-241
-303
+195
+145
+331
+178
 show-stress?
 show-stress?
-0
+1
 1
 -1000
 
