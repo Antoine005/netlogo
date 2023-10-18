@@ -261,26 +261,26 @@ PENS
 "tortues" 1.0 0 -16449023 true "" "plot count tortues"
 
 MONITOR
-110
+105
 185
 180
-230
+231
 fishes
 count fishes
 3
 1
-11
+12
 
 MONITOR
 184
 185
-254
-230
+259
+231
 tortues
 count tortues
 3
 1
-11
+12
 
 SWITCH
 185
