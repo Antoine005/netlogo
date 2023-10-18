@@ -29,7 +29,7 @@ to setup
   [
     set shape "turtle"
     set color green
-    set size 5  ; easier to see
+    set size 1.5 ; easier to see
     setxy random-xcor random-ycor
   ]
   display-labels
@@ -47,7 +47,7 @@ to go
     ; in this version, sheep eat grass, grass grows, and it costs sheep energy to move
 
     if stress < 1 [reproduce-fishes]  ; sheep reproduce at a random rate governed by a slider
-    ifelse count tortues-here > 2 [set stress stress + 15] [set stress stress]
+    ifelse count tortues in-radius 4 > 2  [set stress stress + 15] [set stress stress - 1]
     death
   ]
   ask tortues [
@@ -70,7 +70,7 @@ end
 
 to reproduce-fishes  ; sheep procedure
   if random-float 100 < fish-reproduce [  ; throw "dice" to see if you will reproduce
-    ;set energy (energy / 2)                ; divide energy between parent and offspring
+    set stress 20                ; divide energy between parent and offspring
     hatch 1 [ rt random-float 360 fd 1 ]   ; hatch an offspring and move it forward 1 step
   ]
 end
@@ -143,7 +143,7 @@ initial-number-fishes
 initial-number-fishes
 0
 250
-217.0
+127.0
 1
 1
 NIL
@@ -173,7 +173,7 @@ initial-number-tortues
 initial-number-tortues
 0
 250
-222.0
+48.0
 1
 1
 NIL
