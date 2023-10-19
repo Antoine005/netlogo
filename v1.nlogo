@@ -6,6 +6,8 @@ breed [ tortues tortue ]
 
 fishes-own [ stress ]       ; fishes have caracteristic which is stress
 
+patches-own [ path ] ;  last time a dish was on this patch
+
 to setup
   clear-all
   set max-fishes 1500 ; max number of fish
@@ -30,6 +32,7 @@ to setup
     set size 1.5 ; easier to see (bigger in size for graphic purpose)
     setxy random-xcor random-ycor
   ]
+  ask patches [set path 0]
   display-labels
   reset-ticks
 end
@@ -47,7 +50,7 @@ to go
       ; Move in the direction of the nearby fish
       set heading towards-fish
       fd 1
-      ask patch-here [ set pcolor 26 ]
+      ask patch-here [ set path 20 ]
     ]
     ifelse count tortues in-radius 4 > 0 [set stress stress + 1] [if stress > 0 [set stress stress - 1]] ; if there is a tortue whithin a radius of 4, the fish gets 15 points of stress otherwise he loses 1 point
     death ;we try to see if the fish is to die
@@ -74,10 +77,21 @@ to go
 ;      ]
     ]
     move
-    ask patch-here [ set pcolor blue ]
+;    ask patch-here [ set pcolor blue ]
   ]
+  change-patch-color
+  ask patches [set path path - 1]
   tick
   display-labels
+end
+
+to change-patch-color
+  ask patches [
+    if path = 20 [set pcolor 26]
+    if path < 20 [set pcolor 28]
+    if path < 10 [set pcolor 29]
+    if path < 1  [set pcolor blue]
+  ]
 end
 
 to move  ; turtle procedure
