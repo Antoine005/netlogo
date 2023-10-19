@@ -8,7 +8,7 @@ fishes-own [ stress ]       ; fishes have caracteristic which is stress
 
 to setup
   clear-all
-  set max-fishes 10000 ; max number of fish
+  set max-fishes 1500 ; max number of fish
 
   ask patches [ set pcolor blue ] ; bleu background to simulate see
 
@@ -47,6 +47,7 @@ to go
       ; Move in the direction of the nearby fish
       set heading towards-fish
       fd 1
+      ask patch-here [ set pcolor 26 ]
     ]
     ifelse count tortues in-radius 4 > 0 [set stress stress + 1] [if stress > 0 [set stress stress - 1]] ; if there is a tortue whithin a radius of 4, the fish gets 15 points of stress otherwise he loses 1 point
     death ;we try to see if the fish is to die
@@ -73,6 +74,7 @@ to go
 ;      ]
     ]
     move
+    ask patch-here [ set pcolor blue ]
   ]
   tick
   display-labels
@@ -136,13 +138,13 @@ to display-labels
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-360
+395
 10
-878
-529
+1179
+795
 -1
 -1
-19.22
+15.22
 1
 14
 1
@@ -264,7 +266,7 @@ MONITOR
 105
 185
 180
-231
+234
 fishes
 count fishes
 3
@@ -275,7 +277,7 @@ MONITOR
 184
 185
 259
-231
+234
 tortues
 count tortues
 3
