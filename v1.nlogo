@@ -50,7 +50,8 @@ to go
       ; Move in the direction of the nearby fish
       set heading towards-fish
       fd 1
-      ask patch-here [ set path 20 ]
+
+      if model-version = "fishes-behavior-analyzer" [ask patch-here [ set path 20 ]]
     ]
     ifelse count tortues in-radius 4 > 0 [set stress stress + 1] [if stress > 0 [set stress stress - 1]] ; if there is a tortue whithin a radius of 4, the fish gets 15 points of stress otherwise he loses 1 point
     death ;we try to see if the fish is to die
@@ -187,7 +188,7 @@ initial-number-fishes
 initial-number-fishes
 0
 250
-145.0
+150.0
 1
 1
 NIL
@@ -217,7 +218,7 @@ initial-number-tortues
 initial-number-tortues
 0
 250
-32.0
+33.0
 1
 1
 NIL
@@ -318,6 +319,16 @@ Testing fishes stress with turtles\n
 24
 33.0
 1
+
+CHOOSER
+100
+560
+287
+605
+model-version
+model-version
+"fishes-behavior-analyzer" "turtles-behavior-analyzer"
+0
 
 @#$#@#$#@
 Sure, here's the adapted information statement for your code:
