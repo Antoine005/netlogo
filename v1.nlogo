@@ -307,7 +307,7 @@ SWITCH
 203
 show-stress?
 show-stress?
-0
+1
 1
 -1000
 
