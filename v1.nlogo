@@ -78,6 +78,7 @@ to go
 ;      ]
     ]
     move
+    if model-version = "turtles-behavior-analyzer" [ask patch-here [ set path 20 ]]
 ;    ask patch-here [ set pcolor blue ]
   ]
   change-patch-color
@@ -180,10 +181,10 @@ ticks
 30.0
 
 SLIDER
-5
-60
-179
-93
+20
+130
+194
+163
 initial-number-fishes
 initial-number-fishes
 0
@@ -195,10 +196,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-5
-100
-179
-133
+20
+170
+194
+203
 fish-reproduce
 fish-reproduce
 1.0
@@ -210,10 +211,10 @@ fish-reproduce
 HORIZONTAL
 
 SLIDER
-185
-60
-350
-93
+200
+130
+365
+163
 initial-number-tortues
 initial-number-tortues
 0
@@ -225,10 +226,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-110
-145
-179
-178
+125
+215
+194
+248
 setup
 setup
 NIL
@@ -242,10 +243,10 @@ NIL
 1
 
 BUTTON
-185
-145
-255
-178
+200
+215
+270
+248
 go
 go
 T
@@ -259,10 +260,10 @@ NIL
 0
 
 PLOT
-10
-240
-350
-530
+25
+310
+365
+600
 populations
 time
 pop.
@@ -278,10 +279,10 @@ PENS
 "tortues" 1.0 0 -16449023 true "" "plot count tortues"
 
 MONITOR
-105
-185
-180
-234
+120
+255
+195
+304
 fishes
 count fishes
 3
@@ -289,10 +290,10 @@ count fishes
 12
 
 MONITOR
-184
-185
-259
-234
+199
+255
+274
+304
 tortues
 count tortues
 3
@@ -300,10 +301,10 @@ count tortues
 12
 
 SWITCH
-185
-100
-350
-133
+200
+170
+365
+203
 show-stress?
 show-stress?
 0
@@ -311,10 +312,10 @@ show-stress?
 -1000
 
 TEXTBOX
-5
-15
-365
-45
+25
+30
+385
+60
 Testing fishes stress with turtles\n
 24
 33.0
@@ -322,13 +323,13 @@ Testing fishes stress with turtles\n
 
 CHOOSER
 100
-560
+80
 287
-605
+125
 model-version
 model-version
 "fishes-behavior-analyzer" "turtles-behavior-analyzer"
-0
+1
 
 @#$#@#$#@
 Sure, here's the adapted information statement for your code:
