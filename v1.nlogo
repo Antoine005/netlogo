@@ -329,73 +329,66 @@ CHOOSER
 model-version
 model-version
 "fishes-behavior-analyzer" "turtles-behavior-analyzer"
-1
+0
 
 @#$#@#$#@
-Sure, here's the adapted information statement for your code:
-
 ## WHAT IS IT?
 
-This model simulates the dynamics of a predator-prey ecosystem consisting of fishes and tortoises. The fishes aim to maintain their population while managing their stress levels. If their stress gets too high, they die. The tortoises move in a pattern based on their proximity to nearby fishes. The goal is to explore the stability and interactions of this ecosystem.
+This model simulates the interaction between two types of agents: fishes and tortoises. The fishes have a characteristic called "stress," and the population of fishes is limited to prevent it from growing too large. The fishes move around in a simulated sea environment, interact with each other and the tortoises, and can reproduce under certain conditions. The stress level of fishes is affected by the presence of tortoises in their vicinity, and when fishes are too stressed, they may die. The behavior of the tortoises is to move and interact with nearby fishes.
 
 ## HOW IT WORKS
 
-- **Globals**: The model has a global variable `max-fishes` to limit the fish population growth.
+This model consists of two breeds: "fishes" and "tortoises." Fishes have a characteristic called "stress." The simulation is set in a sea environment represented by blue patches.
 
-- **Breeds**: Two breeds are defined - `fishes` and `tortoises` to represent fishes and tortoises.
+The model initializes by creating an initial population of fishes and tortoises on random patches in the sea. Fishes are represented by red fish shapes, and tortoises are represented by green turtle shapes.
 
-- **Fish Characteristics**: Fishes have the characteristic `stress` to represent their stress levels.
+The behavior of fishes includes movement, reproduction, and stress management. They may reproduce if their stress is below a certain threshold, and they are more stressed if there are tortoises in their vicinity. Fishes can also die if their stress level exceeds a critical value.
 
-- **Setup**: 
-  -- It clears the world and sets the maximum number of fishes.
-  -- Patches are colored blue to simulate the sea.
-  -- Fishes are created with initial attributes, including shape, color, size, and initial stress levels.
-  -- Tortoises are created with initial attributes and move based on their proximity to fishes.
-
-- **Go**:
-  -- The simulation continues as long as there are not too many fish or all fish have died.
-  - Fishes:
-    -- Try to reproduce if their stress is below a certain threshold.
-    -- Their stress increases if there are tortoises within a radius of 4 and decreases if not.
-    -- Fishes can die if their stress exceeds a critical value.
-  - Tortoises:
-    -- Move in a pattern based on their proximity to nearby fishes.
-  - The model updates at each tick, and labels displaying fish stress are optionally shown.
+The tortoises' behavior involves moving and interacting with nearby fishes.
 
 ## HOW TO USE IT
 
-1. Set the maximum fish population with the `max-fishes` global variable.
-2. Click the "Setup" button to initialize the simulation.
-3. Click the "Go" button to start the simulation.
-4. Observe the dynamics of fish and tortoise populations, as well as fish stress levels.
+1. Set the maximum number of fishes using the "max-fishes" global variable.
+2. Press the "Setup" button to initialize the simulation with the specified parameters.
+3. Press the "Go" button to start the simulation.
+4. Observe the behaviors of fishes and tortoises in the sea environment.
+5. Monitor the stress levels of fishes if the "show-stress?" option is enabled.
 
-Parameters:
-- `max-fishes`: Maximum fish population.
-- `initial-number-fishes`: Initial number of fish.
-- `initial-number-tortoises`: Initial number of tortoises.
-- `fish-reproduce`: Probability of fish reproduction.
-- `show-stress?`: Whether to display stress levels.
+### Parameters:
+
+- **max-fishes**: The maximum number of fishes allowed in the simulation.
+- **initial-number-fishes**: The initial number of fishes in the simulation.
+- **initial-number-tortoises**: The initial number of tortoises in the simulation.
+- **fish-reproduce**: The probability of a fish reproducing at each time step.
+- **show-stress?**: Whether or not to display the stress levels of fishes as labels.
 
 ## THINGS TO NOTICE
 
-- Observe how the fish and tortoise populations fluctuate.
-- The relationship between fish stress, tortoise proximity, and fish reproduction.
+- Observe how the fish population fluctuates and how it is affected by the presence of tortoises.
+- Pay attention to the stress levels of fishes and how they change based on the proximity of tortoises.
+- The simulation may stop if the fish population becomes too large or if there are no more fishes left.
 
 ## THINGS TO TRY
 
-- Experiment with different parameters to see how they affect the stability of the ecosystem.
-- Try to find parameter values that lead to a stable ecosystem.
-- Test how different rates of fish reproduction influence the simulation's outcome.
+- Experiment with different parameter values to see how they affect the stability and behavior of the ecosystem.
+- Observe the impact of changing the "max-fishes" limit on the simulation's outcome.
+- Analyze the interaction patterns between fishes and tortoises and how they influence stress levels.
+
+## EXTENDING THE MODEL
+
+- You can extend the model by introducing additional behaviors for fishes and tortoises.
+- Modify the reproduction rules or stress calculations to explore different scenarios.
+- Implement new features such as fish migration, predation, or territorial behavior.
 
 ## NETLOGO FEATURES
 
-- The model utilizes breeds to represent different types of agents (fishes and tortoises).
-- Agents have their own characteristics (stress levels).
-- The use of global variables to control the simulation.
+- This model uses breeds to define two types of agents: fishes and tortoises.
+- It employs patches to represent the sea environment.
+
 
 ## CREDITS AND REFERENCES
 
-Author: Antoine Porte et Antoine Neyra
+Author: Antoine Porte and Antoine Neyra
 
 ## HOW TO CITE
 
@@ -403,7 +396,7 @@ If you mention this model or the NetLogo software in a publication, we ask that 
 
 For the model itself:
 
-* Antoine Porte et Antoine Neyra (2023).  NetLogo Fish Turtles Ecosystem model. https://github.com/Antoine005/netlogo ENSC, Bordeaux INP, FRANCE.
+* Antoine Porte and Antoine Neyra (2023).  NetLogo Fish Turtles Ecosystem model. https://github.com/Antoine005/netlogo ENSC, Bordeaux INP, FRANCE.
 
 Please cite the NetLogo software as:
 
